@@ -20,8 +20,8 @@ result_list = []
 #client_id = N0yT2MUgrlY2bg
 
 def findRelatedUsers(amount, r, subreddit, list_of_subreddits):
-	print("**********TOP LEVEL***************")
-	print(f"Finding related users of {subreddit}")
+	#print("**********TOP LEVEL***************")
+	#print(f"Finding related users of {subreddit}")
 	users = []
 	submissions_user = r.subreddit(subreddit).new(limit=None)
 	for submission in submissions_user:
@@ -36,7 +36,7 @@ def findRelatedUsers(amount, r, subreddit, list_of_subreddits):
 			#i += 1
 		#print(submission.author)
 		#print(i)
-	print(users)
+	#print(users)
 	for j in users:
 		findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, str(j), list_of_subreddits, users, subreddit)
 	#findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, "hemuli")
@@ -45,7 +45,7 @@ def findRelatedUsers(amount, r, subreddit, list_of_subreddits):
 def findRelatedSubreddits(amount, r, user, list_of_subreddits, users, original_subreddit):
 	global COUNTER
 
-	print(f"Finding related subreddits of {user}")
+	#print(f"Finding related subreddits of {user}")
 	subreddits = []
 	submissions = r.redditor(user).submissions.new(limit=None)
 	for submission in submissions:
@@ -61,14 +61,14 @@ def findRelatedSubreddits(amount, r, user, list_of_subreddits, users, original_s
 		elif subreddit not in list_of_subreddits and subreddit not in subreddits:
 			subreddits.append(subreddit)
 			#print(submission.subreddit)
-	print(subreddits)
+	#print(subreddits)
 	for num, i in enumerate(subreddits):
 		findRelatedUsersSecond(NUM_OF_USERS_PER_SUBREDDIT_INNER, r, str(i), subreddits, users, original_subreddit)
 
 
 def findRelatedUsersSecond(amount, r, subreddit, list_of_subreddits, top_level_users, original_subreddit):
-	print("**********INNER LEVEL***************")
-	print(f"Finding related users of {subreddit}")
+	#print("**********INNER LEVEL***************")
+	#print(f"Finding related users of {subreddit}")
 	users = []
 	submissions_user = r.subreddit(subreddit).new(limit=None)
 	for submission in submissions_user:
@@ -86,14 +86,14 @@ def findRelatedUsersSecond(amount, r, subreddit, list_of_subreddits, top_level_u
 		#print(submission.author)
 		#print(i)
 
-	print(users)
+	#print(users)
 
 	for j in users:
 		findRelatedSubredditsSecond(NUM_OF_SUBREDDITS_PER_USER_INNER, r, str(j), list_of_subreddits, subreddit, original_subreddit)
 	#findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, "hemuli")
 
 def findRelatedSubredditsSecond(amount, r, user, list_of_subreddits, level_2_subreddit, original_subreddit):
-	print(f"Finding related subreddits of {user}")
+	#print(f"Finding related subreddits of {user}")
 	subreddits = []
 	submissions = r.redditor(user).submissions.new(limit=None)
 	for submission in submissions:
@@ -108,8 +108,9 @@ def findRelatedSubredditsSecond(amount, r, user, list_of_subreddits, level_2_sub
 			subreddits.append(subreddit)
 			#print(submission.subreddit)
 
-	print(subreddits)
+	#print(subreddits)
 	for num, i in enumerate(subreddits):
+		
 		result_list.append([original_subreddit, level_2_subreddit, str(i)])
 	#print("*******")
 	#print(list_of_subreddits)
@@ -137,18 +138,19 @@ def run():
 			break
 		elif subreddit not in top_subreddits:
 			top_subreddits.append(subreddit)
-	print("*******TOP LEVEL SUBREDDITS*************")
-	print(top_subreddits)
+	#print("*******TOP LEVEL SUBREDDITS*************")
+	#print(top_subreddits)
 	for num, k in enumerate(top_subreddits):
+		print(f"Loop: {num} / {len(top_subreddits)}")
 		findRelatedUsers(NUM_OF_USERS_PER_SUBREDDIT_TOP, r, str(k), top_subreddits)
-	print()
-	print()
-	print()
-	print()
-	print("RESULS:")
-	print(top_subreddits)
-	for i in result_list:
-		print(i)
+	#print()
+	#print()
+	#print()
+	#print()
+	#print("RESULS:")
+	#print(top_subreddits)
+	#for i in result_list:
+	#	print(i)
 def main():
 	start = time.time()
 	now = datetime.now()
