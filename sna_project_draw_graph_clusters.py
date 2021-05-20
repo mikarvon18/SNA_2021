@@ -137,6 +137,7 @@ print()
 #print(f"LENGTH OF WHOLE LIST: {len(list_of_all)}")
 print(f"NUMBER OF CONNECTED COMPONENTS: {nx.number_connected_components(Gn)}")
 Gcc = Gn.subgraph(sorted(nx.connected_components(Gn), key=len, reverse=True)[0])
+print(f"AVERAGE SHORTEST PATH LENGTH: {nx.average_shortest_path_length(Gcc)}")
 print(f"SIZE OF GIANT COMPONENT: {len(Gcc)}")
 print(f"DIAMETER OF GIANT COMPONENT: {nx.diameter(Gcc)}")
 #Gcc = G.subgraph(sorted(nx.connected_components(G), key=len, reverse=True)[0])
@@ -147,7 +148,7 @@ print(f"DIAMETER OF GIANT COMPONENT: {nx.diameter(Gcc)}")
 #plt.show()
 
 
-
+"""
 #*********************
 
 #DRAWING THE HISTOGRAM
@@ -180,7 +181,7 @@ nx.draw_networkx_labels(G, pos)
 nx.draw_networkx_edges(G, pos, alpha=0.4)
 plt.show()
 
-
+"""
 """
 for i in G.nodes():
 	#print(G.degree[i])
