@@ -6,11 +6,11 @@ from prawcore.exceptions import Forbidden
 from datetime import datetime
 import time
 
-NUM_OF_SUBREDDITS = 10
-NUM_OF_USERS_PER_SUBREDDIT_TOP = 10
-NUM_OF_SUBREDDITS_PER_USER_TOP = 10
-NUM_OF_USERS_PER_SUBREDDIT_INNER = 10
-NUM_OF_SUBREDDITS_PER_USER_INNER = 10
+NUM_OF_SUBREDDITS = 5
+NUM_OF_USERS_PER_SUBREDDIT_TOP = 5
+NUM_OF_SUBREDDITS_PER_USER_TOP = 3
+NUM_OF_USERS_PER_SUBREDDIT_INNER = 5
+NUM_OF_SUBREDDITS_PER_USER_INNER = 5
 COUNTER = 0
 result_list = []
 
@@ -38,7 +38,11 @@ def findRelatedUsers(amount, r, subreddit, list_of_subreddits):
 		#print(i)
 	#print(users)
 	for j in users:
-		findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, str(j), list_of_subreddits, users, subreddit)
+		try:
+			findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, str(j), list_of_subreddits, users, subreddit)
+		except:
+			print("ERROR")
+			continue
 	#findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, "hemuli")
 
 
@@ -63,7 +67,11 @@ def findRelatedSubreddits(amount, r, user, list_of_subreddits, users, original_s
 			#print(submission.subreddit)
 	#print(subreddits)
 	for num, i in enumerate(subreddits):
-		findRelatedUsersSecond(NUM_OF_USERS_PER_SUBREDDIT_INNER, r, str(i), subreddits, users, original_subreddit)
+		try:
+			findRelatedUsersSecond(NUM_OF_USERS_PER_SUBREDDIT_INNER, r, str(i), subreddits, users, original_subreddit)
+		except:
+			print("ERROR")
+			continue
 
 
 def findRelatedUsersSecond(amount, r, subreddit, list_of_subreddits, top_level_users, original_subreddit):
@@ -89,7 +97,11 @@ def findRelatedUsersSecond(amount, r, subreddit, list_of_subreddits, top_level_u
 	#print(users)
 
 	for j in users:
-		findRelatedSubredditsSecond(NUM_OF_SUBREDDITS_PER_USER_INNER, r, str(j), list_of_subreddits, subreddit, original_subreddit)
+		try:
+			findRelatedSubredditsSecond(NUM_OF_SUBREDDITS_PER_USER_INNER, r, str(j), list_of_subreddits, subreddit, original_subreddit)
+		except:
+			print("ERROR")
+			continue
 	#findRelatedSubreddits(NUM_OF_SUBREDDITS_PER_USER_TOP, r, "hemuli")
 
 def findRelatedSubredditsSecond(amount, r, user, list_of_subreddits, level_2_subreddit, original_subreddit):
@@ -125,7 +137,6 @@ def run():
 					client_id='N0yT2MUgrlY2bg', 
 					client_secret='l2lkbw5xrjyHqUhHH3-U8JbxFDlwuA',
 					)
-	#r.login('mikarvon18', 'hessuhopo')
 	r.read_only = True
 
 	top_subreddits = []
