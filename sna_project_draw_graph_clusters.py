@@ -17,10 +17,22 @@ with open ('data-May-20-2021--13-03__10-10-10-10-10.txt', 'rb') as fp:
 
 
 
+#FOR DEMO PURPOSE ONLY
+#list_of_all = [['gaming', 'RocketLeague', 'valheim'],
+#	['gaming', 'RocketLeague', 'LeagueConnect'],
+#	['gaming', 'RocketLeague', 'Seaofthieves'],
+#	['gaming', 'RocketLeague', 'spotify'],
+#	['gaming', 'RocketLeague', 'gamingchannels'],
+#	['gaming', 'gamingchannels', 'YoutubeShare'],
+#	['gaming', 'gamingchannels', 'YoutubeSelfPromotion'],
+#	['gaming', 'gamingchannels', 'YouTubePromoter']]
+
+
 #labels = {}
 digraph = True
 
-
+#for i in list_of_all:
+#	print(i)
 
 G = nx.DiGraph()
 Gn = nx.Graph()
@@ -90,23 +102,55 @@ def calculateVarianceDict(lista):
 		lst.append(i)
 	return np.var(lst)
 
+def sortNestedList(lst):
+	lst.sort(reverse = True, key = lambda x: x[1])
+	return lst
+
+def sortDict(dct):
+	return {k: v for k, v in sorted(dct.items(), reverse = True,key=lambda item: item[1])}
+
 print(f"Total number of edges (before cleaning the data): {len(list_of_all)}")
 print(f"Total number of edges: {G.number_of_edges()}")
 print(f"Total number of nodes: {G.number_of_nodes()}")
 print()
 	
 in_degree = G.in_degree()
+in_degree = list(in_degree)
+
+
+in_degree_sorted = sortNestedList(in_degree)
+#print("Top 10 by in-degree value")
+#for i in range(10):
+#	print(in_degree_sorted[i])
+#print(in_degree_sorted)
 #print(in_degree)
 print(f"AVERAGE IN DEGREE: {getAverage(in_degree)}")
 print(f"VARIANCE OF IN DEGREE: {calculateVariance(in_degree)}")
 print()
 
+
 in_degree_centrality = nx.in_degree_centrality(G)
+in_degree_centrality_sorted = sortDict(in_degree_centrality)
+#print("Top 10 by in-degree centrality")
+#i = 0
+#for key, value in in_degree_centrality_sorted.items():
+	
+#	print(f"{i+1}. '{key}', {value:2f}")
+#	if i == 9:
+#		break
+#	i += 1
+
 print(f"AVERAGE IN DEGREE CENTRALITY: {getAverageDict(in_degree_centrality)}")
 print(f"VARIANCE IN DEGREE CENTRALITY: {calculateVarianceDict(in_degree_centrality)}")
 print()
 
 out_degree = G.out_degree()
+out_degree = list(out_degree)
+out_degree_sorted = sortNestedList(out_degree)
+
+#print("Top 10 by out-degree value")
+#for i in range(10):
+#	print(out_degree_sorted[i])
 print(f"AVERAGE OUT DEGREE: {getAverage(out_degree)}")
 print(f"VARIANCE OF OUT DEGREE: {calculateVariance(out_degree)}")
 print()
@@ -116,7 +160,29 @@ print(f"AVERAGE OUT DEGREE CENTRALITY: {getAverageDict(out_degree_centrality)}")
 print(f"VARIANCE OUT DEGREE CENTRALITY: {calculateVarianceDict(out_degree_centrality)}")
 print()
 
+out_degree_centrality_sorted = sortDict(out_degree_centrality)
+#print("Top 10 by out-degree centrality")
+#i = 0
+#for key, value in out_degree_centrality_sorted.items():
+	
+#	print(f"{i+1}. '{key}', {value:2f}")
+#	if i == 9:
+#		break
+#	i += 1
+
+
 betweenness_centrality = nx.betweenness_centrality(G)
+
+betweenness_centrality_sorted = sortDict(betweenness_centrality)
+#print("Top 10 by betweenness centrality")
+#i = 0
+#for key, value in betweenness_centrality_sorted.items():
+	
+#	print(f"{i+1}. '{key}', {value:2f}")
+#	if i == 9:
+#		break
+#	i += 1
+
 print(f"AVERAGE BETWEENNESS CENTRALITY: {getAverageDict(betweenness_centrality)}")
 print(f"VARIANCE OF BETWEENNESS CENTRALITY: {calculateVarianceDict(betweenness_centrality)}")
 print()
@@ -142,13 +208,13 @@ print(f"SIZE OF GIANT COMPONENT: {len(Gcc)}")
 print(f"DIAMETER OF GIANT COMPONENT: {nx.diameter(Gcc)}")
 #Gcc = G.subgraph(sorted(nx.connected_components(G), key=len, reverse=True)[0])
 #print(Gcc)
-#nx.draw(G, font_size=16, with_labels=True, edge_color='gray', width=0.5)
+#nx.draw_random(G, font_size=16, with_labels=True, edge_color='gray', width=0.5)
 
 #nx.draw(Gcc, font_size=16, with_labels=True, edge_color='gray', width=0.5)
 #plt.show()
 
 
-"""
+
 #*********************
 
 #DRAWING THE HISTOGRAM
@@ -158,10 +224,16 @@ degree_sequence = sorted([d for n, d in G.in_degree()], reverse=True)  # degree 
 degreeCount = collections.Counter(degree_sequence)
 deg, cnt = zip(*degreeCount.items())
 
+#print("deg")
+#print(deg)
+
+#print("cnt")
+#print(cnt)
+
 fig, ax = plt.subplots()
 plt.bar(deg, cnt, width=0.80, color="b")
 
-plt.title("In Degree Histogram")
+plt.title("In Degree Histogram (logarithmic scale)")
 plt.ylabel("Count")
 plt.xlabel("In Degree")
 ax.set_xticks([d + 0.4 for d in deg])
@@ -174,14 +246,14 @@ pos = nx.spring_layout(G)
 plt.axis("off")
 
 #APPLY LOGARITHMIC SCALE
-#ax.set_yscale('log')
-#ax.set_xscale('log')
-nx.draw_networkx_nodes(G, pos, node_size=20)
-nx.draw_networkx_labels(G, pos)
-nx.draw_networkx_edges(G, pos, alpha=0.4)
-plt.show()
+ax.set_yscale('log')
+ax.set_xscale('log')
 
-"""
+#nx.draw_networkx_nodes(G, pos, node_size=20)
+#nx.draw_networkx_labels(G, pos)
+#nx.draw_networkx_edges(G, pos, alpha=0.4)
+#plt.show()
+
 """
 for i in G.nodes():
 	#print(G.degree[i])
